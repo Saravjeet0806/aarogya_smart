@@ -18,7 +18,7 @@ function App() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed', // Optional: Keeps the background fixed while scrolling
+        opacity: '90%',
       }}
     >
       <Router>
