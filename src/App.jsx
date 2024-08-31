@@ -21,7 +21,6 @@ function App() {
         <Route path="/community" element={<Community />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-     
     </Router>
   
   );
