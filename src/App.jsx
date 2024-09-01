@@ -1,28 +1,31 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar'; 
-import HomePage from './components/HomePage'; 
+import Navbar from './components/Navbar';
+import HomePage from './components/HomePage';
 import DailyChallenge from './components/DailyChallenge';
-import WorkoutPlan from './components/WorkoutPlan'; 
+import WorkoutPlan from './components/WorkoutPlan';
 import Motivation from './components/Motivation';
 import Community from './components/Community';
-import Profile from './components/Profile'; 
-import backgroundImage from './assets/images/yogaman.jpg'; // Adjust path as needed
+import Profile from './components/Profile';
+import Img from './assets/images/yogaman2.jpg'; 
 
 function App() {
   return (
     <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat"
+      className="relative min-h-screen"
       style={{
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: `url(${Img})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        opacity: '90%',
+        backgroundAttachment: 'fixed',
       }}
     >
+      {/* Background Color Overlay */}
+      <div className="absolute inset-0 bg-[#292905] opacity-70"></div>
+
       <Router>
-        <div className="relative z-10 mx-auto max-w-4xl">
+        <div className="relative z-10">
           <Navbar />
           <div className="min-h-screen">
             <Routes>
