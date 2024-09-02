@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { Container, TextField, Button, Typography, Alert, Paper } from '@mui/material';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -22,34 +23,45 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
-        <div>
-          <label>Email:</label>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
+    <Container maxWidth="xs" style={{ marginTop: '5rem' }}>
+      <Paper elevation={3} style={{ padding: '2rem', backgroundColor: '#fff' }}> {/* White background for the sign-up box */}
+        <Typography variant="h4" component="h2" gutterBottom>
+          Sign Up
+        </Typography>
+        <form onSubmit={handleSignUp}>
+          <TextField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            fullWidth
+            required
+            margin="normal"
           />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            required
+            margin="normal"
           />
-        </div>
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+          {error && <Alert severity="error">{error}</Alert>}
+          {success && <Alert severity="success">{success}</Alert>}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            style={{ marginTop: '1rem' }}
+          >
+            Sign Up
+          </Button>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 
 export default SignUp;
-
