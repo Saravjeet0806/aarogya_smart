@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { Container, TextField, Button, Typography, Alert, Paper } from '@mui/material';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,37 +12,50 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      setError(''); // Clear error on successful login
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
+    <Container maxWidth="xs" style={{ marginTop: '5rem' }}>
+      <Paper elevation={3} style={{ padding: '2rem', backgroundColor: '#fff' }}>  
+        <Typography variant="h4" component="h2" gutterBottom>
+          Login
+        </Typography>
+        <form onSubmit={handleLogin}>
+          <TextField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            fullWidth
+            required
+            margin="normal"
           />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            required
+            margin="normal"
           />
-        </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
-      </form>
-    </div>
+          {error && <Alert severity="error">{error}</Alert>}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            style={{ marginTop: '1rem' }}
+          >
+            Login
+          </Button>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 
