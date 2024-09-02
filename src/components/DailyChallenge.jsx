@@ -2,7 +2,11 @@ import React from 'react';
 
 const DailyChallenge = () => {
   return (
-    <section className="py-10 px-4">
+    <section className="py-10 px-4"
+    style={{
+      background: 'linear-gradient(243.4deg, rgb(0, 215, 206) 13%, rgb(0, 132, 255) 98%)',
+      padding: '2rem', 
+    }}>
       <h2 className="text-3xl font-bold mb-4">Daily Challenge</h2>
       <p className="text-lg mb-4">
         Stay motivated with our daily fitness challenges! Complete them to earn rewards and track your progress.
