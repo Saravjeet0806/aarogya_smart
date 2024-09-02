@@ -11,7 +11,6 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase'; 
-import Img from './assets/images/yogaman2.jpg'
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -21,18 +20,9 @@ function App() {
   }
 
   return (
-    <div
-      className="relative min-h-screen"
-      style={{
-        backgroundImage: `url(${Img})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed',
-      }}
-    >
+    <div className="relative min-h-screen">
       {/* Background Color Overlay */}
-      <div className="absolute inset-0 bg-[#292905] opacity-70"></div>
+      <div className="absolute inset-0 bg-[#ffffff] opacity-70"></div>
 
       <Router>
         <div className="relative z-10">
