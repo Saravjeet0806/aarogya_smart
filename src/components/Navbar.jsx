@@ -11,11 +11,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="">
+    <nav className=" bg-[#1b1b06b1] shadow-md">
       <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-        {/* Logo */}
-        <div className="flex items-center">
-          <div className="text-3xl font-bold">AarogyaAi</div>
+        {/* Logo inside a yellow box with a sparkle effect */}
+        <div className="flex items-center bg-yellow-600 px-4 py-2 rounded">
+          <div className="text-3xl font-bold text-[#e7e6a7] sparkle-effect">
+            Aarogya<span className="">Ai</span>
+          </div>
         </div>
         {/* Navigation Links */}
         <ul className="flex space-x-6">
@@ -49,4 +51,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
