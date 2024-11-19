@@ -25,7 +25,7 @@ const Navbar = () => {
           <li><Link to="/daily-challenge" className="text-[#30282a] text-xl hover:text-gray-900">Daily Challenge</Link></li>
           <li><Link to="/workout-plan" className="text-[#30282a] text-xl hover:text-gray-900">Workout Plan</Link></li>
           <li><Link to="/motivation" className="text-[#30282a] text-xl hover:text-gray-900">Motivation</Link></li>
-          <li><Link to="/community" className="text-[#30282a] text-xl hover:text-gray-900">Community</Link></li>
+         
           {user ? (
             <>
               <li><Link to="/profile" className="text-[#30282a] text-xl hover:text-gray-900">Profile</Link></li>

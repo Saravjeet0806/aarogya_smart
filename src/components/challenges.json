@@ -1,0 +1,28 @@
+[
+    {
+      "id": 1,
+      "text": "30 minutes of cardio 🏃‍♂️",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "text": "20 push-ups 💪",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "text": "15 squats 🏋️‍♀️",
+      "completed": false
+    },
+    {
+      "id": 4,
+      "text": "10 minutes of meditation 🧘‍♀️",
+      "completed": false
+    },
+    {
+      "id": 5,
+      "text": "Drink 2 liters of water 💧",
+      "completed": false
+    }
+  ]
+  

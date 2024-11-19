@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import challengesData from './challenges.json'; // Import the JSON file directly
 
 const DailyChallenge = () => {
-  const [challenges, setChallenges] = useState([
-    { id: 1, text: '30 minutes of cardio 🏃‍♂️', completed: false },
-    { id: 2, text: '20 push-ups 💪', completed: false },
-    { id: 3, text: '15 squats 🏋️‍♀️', completed: false },
-  ]);
+  const [challenges, setChallenges] = useState([]);
 
+  // Fetch challenges from the JSON file
+  const fetchChallenges = () => {
+    // Simulate fetching by directly using the imported JSON
+    setChallenges(challengesData);
+  };
+
+  // Fetch challenges on component mount and every 24 hours
+  useEffect(() => {
+    fetchChallenges(); // Initial fetch
+    const interval = setInterval(() => {
+      fetchChallenges(); // Fetch every 24 hours
+    }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
+
+  // Toggle challenge completion
   const toggleChallenge = (id) => {
     setChallenges((prevChallenges) =>
       prevChallenges.map((challenge) =>
@@ -19,7 +33,7 @@ const DailyChallenge = () => {
 
   return (
     <section
-      className="py-10 px-6 rounded-lg shadow-lg  mx-auto"
+      className="py-10 px-6 rounded-lg shadow-lg mx-auto"
       style={{
         background: 'linear-gradient(243.4deg, rgb(0, 215, 206) 13%, rgb(0, 132, 255) 98%)',
       }}
@@ -34,7 +48,7 @@ const DailyChallenge = () => {
         {challenges.map((challenge) => (
           <li
             key={challenge.id}
-            className="flex items-center space-x-3 bg-white px-4 py-3 rounded-md shadow-md"
+            className="flex items-center space-x-3 bg-white px-2 py-2 rounded-md shadow-md"
           >
             <input
               type="checkbox"

@@ -33,7 +33,7 @@ function App() {
               <Route path="/daily-challenge" element={<DailyChallenge />} />
               <Route path="/workout-plan" element={<WorkoutPlan />} />
               <Route path="/motivation" element={<Motivation />} />
-              <Route path="/community" element={<Community />} />
+              
               
               {/* Protected Routes */}
               <Route 
