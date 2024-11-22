@@ -9,8 +9,9 @@ import Community from './components/Community';
 import Profile from './components/Profile';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import HeroSection from './components/HeroSection';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './firebase'; 
+import { auth } from './firebase';
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -29,11 +30,13 @@ function App() {
           <Navbar />
           <div className="min-h-screen">
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<>
+                <HomePage />
+                <HeroSection />
+              </>} />
               <Route path="/daily-challenge" element={<DailyChallenge />} />
               <Route path="/workout-plan" element={<WorkoutPlan />} />
               <Route path="/motivation" element={<Motivation />} />
-              
               
               {/* Protected Routes */}
               <Route 
