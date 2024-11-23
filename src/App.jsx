@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import DailyChallenge from './components/DailyChallenge';
-import WorkoutPlan from './components/WorkoutPlan';
 import Motivation from './components/Motivation';
 import Community from './components/Community';
 import Profile from './components/Profile';
@@ -12,6 +11,8 @@ import SignUp from './components/SignUp';
 import HeroSection from './components/HeroSection';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase';
+ import WorkoutPlan from './components/WorkoutPlan';
+
 
 function App() {
   const [user, loading] = useAuthState(auth);
