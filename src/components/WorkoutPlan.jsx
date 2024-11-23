@@ -1,22 +1,177 @@
-import React from 'react';
+import React, { useState } from 'react';
+import * as XLSX from 'xlsx';
 
 const WorkoutPlan = () => {
+  const [inputs, setInputs] = useState({
+    height: '',
+    weight: '',
+    age: '',
+    gender: '',
+    fitnessGoal: '',
+    fitnessType: '',
+  });
+
+  const [result, setResult] = useState(null);
+  const [bmiInfo, setBmiInfo] = useState({ bmi: null, category: '' });
+  const [data, setData] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/src/components/dataset.xlsx');
+      const arrayBuffer = await response.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet);
+      setData(jsonData);
+    } catch (error) {
+      console.error('Error loading dataset:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const calculateBMI = () => {
+    const heightInMeters = parseFloat(inputs.height);
+    const weightInKg = parseFloat(inputs.weight);
+
+    if (!heightInMeters || !weightInKg) {
+      setBmiInfo({ bmi: null, category: 'Invalid inputs' });
+      return;
+    }
+
+    const bmi = weightInKg / (heightInMeters * heightInMeters);
+    let category = '';
+
+    if (bmi < 18.5) category = 'Underweight';
+    else if (bmi >= 18.5 && bmi < 25) category = 'Normal weight';
+    else if (bmi >= 25 && bmi < 30) category = 'Overweight';
+    else category = 'Obese';
+
+    setBmiInfo({ bmi: bmi.toFixed(2), category });
+  };
+
+  const generatePlan = () => {
+    calculateBMI();
+
+    const filteredData = data.find(
+      (entry) =>
+        entry.Sex.toLowerCase() === inputs.gender.toLowerCase() &&
+        parseInt(entry.Age) === parseInt(inputs.age) &&
+        parseFloat(entry.Height) === parseFloat(inputs.height) &&
+        parseFloat(entry.Weight) === parseFloat(inputs.weight) &&
+        entry['Fitness Goal'].toLowerCase() === inputs.fitnessGoal.toLowerCase() &&
+        entry['Fitness Type'].toLowerCase() === inputs.fitnessType.toLowerCase()
+    );
+
+    if (filteredData) {
+      setResult(filteredData);
+    } else {
+      setResult({ error: 'No matching data found!' });
+    }
+  };
+
   return (
-    <section id="workout-plan" className="py-10 px-4">
-      <h2 className="text-3xl font-bold mb-4">Workout Plan</h2>
-      <p className="text-lg mb-4">
-        Customize your workout plan to achieve your fitness goals. Choose from various exercises and track your workouts.
-      </p>
-      <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-        <h3 className="text-2xl font-semibold mb-2">Sample Workout Plan</h3>
-        <ul className="list-disc pl-5">
-          <li className="mb-2">Warm-up: 5 minutes of jogging</li>
-          <li className="mb-2">Strength Training: 3 sets of 10 reps</li>
-          <li className="mb-2">Cool Down: 5 minutes of stretching</li>
-        </ul>
+    <div className="max-w-5xl mx-auto p-8 bg-gradient-to-r from-blue-100 via-white to-purple-100 rounded-lg shadow-xl">
+      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">
+        Workout Plan Generator
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <input
+          type="number"
+          name="height"
+          placeholder="Height (m)"
+          value={inputs.height}
+          onChange={handleChange}
+          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+        />
+        <input
+          type="number"
+          name="weight"
+          placeholder="Weight (kg)"
+          value={inputs.weight}
+          onChange={handleChange}
+          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+        />
+        <input
+          type="number"
+          name="age"
+          placeholder="Age"
+          value={inputs.age}
+          onChange={handleChange}
+          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+        />
+        <select
+          name="gender"
+          value={inputs.gender}
+          onChange={handleChange}
+          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+        >
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <select
+          name="fitnessGoal"
+          value={inputs.fitnessGoal}
+          onChange={handleChange}
+          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+        >
+          <option value="">Select Fitness Goal</option>
+          <option value="Weight Loss">Weight Loss</option>
+          <option value="Weight Gain">Weight Gain</option>
+        </select>
+        <select
+          name="fitnessType"
+          value={inputs.fitnessType}
+          onChange={handleChange}
+          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+        >
+          <option value="">Select Fitness Type</option>
+          <option value="Cardiovascular Fitness">Cardiovascular Fitness</option>
+          <option value="Muscular Fitness">Muscular Fitness</option>
+        </select>
       </div>
-      {/* Add more content */}
-    </section>
+      <button
+        onClick={generatePlan}
+        className="mt-8 w-full md:w-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition"
+      >
+        Generate Plan
+      </button>
+
+      {bmiInfo.bmi && (
+        <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold">BMI Information</h2>
+          <p className="mt-2"><strong>BMI:</strong> {bmiInfo.bmi}</p>
+          <p><strong>Category:</strong> {bmiInfo.category}</p>
+        </div>
+      )}
+
+      {result && (
+        <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
+          {result.error ? (
+            <p className="text-red-500 font-bold">{result.error}</p>
+          ) : (
+            <>
+              <h2 className="text-2xl font-bold">Recommended Plan</h2>
+              <p className="mt-2"><strong>Fitness Goal:</strong> {result['Fitness Goal']}</p>
+              <p><strong>Fitness Type:</strong> {result['Fitness Type']}</p>
+              <p><strong>Exercises:</strong> {result.Exercises}</p>
+              <p><strong>Equipment:</strong> {result.Equipment}</p>
+              <p><strong>Diet:</strong> {result.Diet}</p>
+              <p><strong>Recommendation:</strong> {result.Recommendation}</p>
+            </>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
