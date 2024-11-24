@@ -79,18 +79,23 @@ const WorkoutPlan = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-gradient-to-r from-blue-100 via-white to-purple-100 rounded-lg shadow-xl">
+    <div
+      className="min-h-screen bg-gradient-to-r from-[#00D7CE] via-[#00D7CE] to-[#0084FF] p-8 rounded-lg shadow-xl"
+      style={{
+        background: 'linear-gradient(243.4deg, rgb(0, 215, 206) 13%, rgb(0, 132, 255) 98%)',
+      }}
+    >
       <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">
         Workout Plan Generator
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <input
           type="number"
           name="height"
           placeholder="Height (m)"
           value={inputs.height}
           onChange={handleChange}
-          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+          className="p-3 text-sm border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none w-full"
         />
         <input
           type="number"
@@ -98,7 +103,7 @@ const WorkoutPlan = () => {
           placeholder="Weight (kg)"
           value={inputs.weight}
           onChange={handleChange}
-          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+          className="p-3 text-sm border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none w-full"
         />
         <input
           type="number"
@@ -106,13 +111,13 @@ const WorkoutPlan = () => {
           placeholder="Age"
           value={inputs.age}
           onChange={handleChange}
-          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+          className="p-3 text-sm border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none w-full"
         />
         <select
           name="gender"
           value={inputs.gender}
           onChange={handleChange}
-          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+          className="p-3 text-sm border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none w-full"
         >
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
@@ -122,7 +127,7 @@ const WorkoutPlan = () => {
           name="fitnessGoal"
           value={inputs.fitnessGoal}
           onChange={handleChange}
-          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+          className="p-3 text-sm border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none w-full"
         >
           <option value="">Select Fitness Goal</option>
           <option value="Weight Loss">Weight Loss</option>
@@ -132,7 +137,7 @@ const WorkoutPlan = () => {
           name="fitnessType"
           value={inputs.fitnessType}
           onChange={handleChange}
-          className="p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+          className="p-3 text-sm border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none w-full"
         >
           <option value="">Select Fitness Type</option>
           <option value="Cardiovascular Fitness">Cardiovascular Fitness</option>
@@ -141,7 +146,7 @@ const WorkoutPlan = () => {
       </div>
       <button
         onClick={generatePlan}
-        className="mt-8 w-full md:w-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition"
+        className="w-full md:w-auto px-8 py-4 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition"
       >
         Generate Plan
       </button>
