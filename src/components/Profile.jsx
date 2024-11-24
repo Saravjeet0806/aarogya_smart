@@ -23,12 +23,15 @@ const Profile = () => {
   }, [user, loading, navigate]);
 
   return (
-    <section className="py-12 px-6 bg-gradient-to-r from-blue-100 via-white to-purple-100 min-h-screen">
+    <section className="py-12 px-6 bg-gradient-to-r from-blue-100 via-white to-purple-100 min-h-screen" style={{
+      background: 'linear-gradient(243.4deg, rgb(0, 215, 206) 13%, rgb(0, 132, 255) 98%)',
+      padding: '2rem', 
+    }}>
       <div className="max-w-5xl mx-auto">
         <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
           Welcome, {profileData.name}!
         </h2>
-        <p className="text-xl text-center text-gray-600 mb-10">
+        <p className="text-xl text-center text-gray-900 mb-10">
           Stay on top of your fitness journey and track your progress. Keep striving for your goals!
         </p>
         
