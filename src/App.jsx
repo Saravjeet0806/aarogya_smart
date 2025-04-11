@@ -11,8 +11,8 @@ import SignUp from './components/SignUp';
 import HeroSection from './components/HeroSection';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase';
- import WorkoutPlan from './components/WorkoutPlan';
-
+import WorkoutPlan from './components/WorkoutPlan';
+import Footer from './components/Footer';  // Import Footer
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -50,6 +50,8 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
             </Routes>
           </div>
+          {/* Include Footer */}
+          <Footer />
         </div>
       </Router>
     </div>
