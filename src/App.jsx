@@ -1,5 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './firebase';
+
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import DailyChallenge from './components/DailyChallenge';
@@ -9,16 +12,14 @@ import Profile from './components/Profile';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import HeroSection from './components/HeroSection';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './firebase';
 import WorkoutPlan from './components/WorkoutPlan';
-import Footer from './components/Footer';  // Import Footer
+import Footer from './components/Footer';
 
 function App() {
   const [user, loading] = useAuthState(auth);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center py-10">Loading...</div>;
   }
 
   return (
@@ -27,30 +28,41 @@ function App() {
       <div className="absolute inset-0 bg-[#ffffff] opacity-70"></div>
 
       <Router>
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-col min-h-screen">
           <Navbar />
-          <div className="min-h-screen">
+          
+          <div className="flex-grow">
             <Routes>
-              <Route path="/" element={<>
-                <HomePage />
-                <HeroSection />
-              </>} />
+              {/* Default Route - Homepage */}
+              <Route
+                path="/"
+                element={
+                  <>
+                    <HomePage />
+                    <HeroSection />
+                  </>
+                }
+              />
               <Route path="/daily-challenge" element={<DailyChallenge />} />
               <Route path="/workout-plan" element={<WorkoutPlan />} />
               <Route path="/motivation" element={<Motivation />} />
+              <Route path="/community" element={<Community />} />
               
-              {/* Protected Routes */}
-              <Route 
-                path="/profile" 
-                element={user ? <Profile /> : <Login />} 
+              {/* Protected Route */}
+              <Route
+                path="/profile"
+                element={user ? <Profile /> : <Navigate to="/login" />}
               />
-              
-              {/* Public Routes */}
+
+              {/* Auth Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+
+              {/* Redirect any unknown route to homepage */}
+              <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>
-          {/* Include Footer */}
+
           <Footer />
         </div>
       </Router>
