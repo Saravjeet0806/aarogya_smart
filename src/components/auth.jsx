@@ -1,7 +1,6 @@
 // src/utils/auth.js
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-
 // Sign up a new user with email and password
 export const signUp = async (email, password) => {
   try {
@@ -13,7 +12,6 @@ export const signUp = async (email, password) => {
   }
 };
 
-// Sign in an existing user with email and password
 export const signIn = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);

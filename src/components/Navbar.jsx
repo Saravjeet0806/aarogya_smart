@@ -5,11 +5,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Navbar = () => {
   const [user] = useAuthState(auth);
-
   const handleSignOut = () => {
     auth.signOut();
   };
-
   return (
     <nav className="bg-[#ffffff] shadow-md">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -17,7 +15,6 @@ const Navbar = () => {
         <div className="text-4xl font-bold text-[#238dc1]">
           Aarogya<span className="text-[#30282a]">Smart</span>
         </div>
-
         {/* Navigation Links */}
         <ul className="flex space-x-8">
           <li>

@@ -12,7 +12,7 @@ const HeroSection = () => {
         
       <div className="container mx-auto px-6 text-center">
         <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-          Empower Your Fitness Journey with AarogyaAi
+          Empower Your Fitness Journey with AarogyaSmart
         </h1>
         <p className="text-lg leading-relaxed mb-8">
           Join millions of Indians on their journey to a healthier and happier life with AarogyaAi. Discover personalized workout plans, daily challenges, and a vibrant community, all designed to make fitness an integral part of India's lifestyle. Together, let's build a fitter and stronger nation.

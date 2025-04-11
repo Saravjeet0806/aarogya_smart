@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
-// Assuming quotes.json is in the same directory as this component
 import quotes from './quotes.json';
 
 const Motivation = () => {
   const [randomQuote, setRandomQuote] = useState(null);
 
   useEffect(() => {
-    // Get a random quote from the quotes array
     const randomIndex = Math.floor(Math.random() * quotes.length);
     setRandomQuote(quotes[randomIndex]);
   }, []);
