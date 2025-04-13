@@ -3,13 +3,14 @@ import * as XLSX from 'xlsx';
 
 const WorkoutPlan = () => {
   const [inputs, setInputs] = useState({
-    height: '',
-    weight: '',
-    age: '',
-    gender: '',
-    fitnessGoal: '',
-    fitnessType: '',
+    height: '1.68',
+    weight: '47.5',
+    age: '18',
+    gender: 'Male',
+    fitnessGoal: 'Weight Gain',
+    fitnessType: 'Muscular Fitness',
   });
+  
 
   const [result, setResult] = useState(null);
   const [bmiInfo, setBmiInfo] = useState({ bmi: null, category: '' });

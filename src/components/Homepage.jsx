@@ -23,7 +23,7 @@ const HomePage = () => {
           <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white rounded-lg p-4 transition-transform transform hover:scale-105 duration-300 ease-in-out">
             <h3 className="text-xl font-semibold mb-2">Workout Plan</h3>
             <p className="text-md leading-relaxed">
-              Our Ai Model generates workout and diet plan with the help of height, weight and BMI. It also gives accurate workout and diet plans for diabetic and hypertension patients.
+              Our Application generates workout and diet plan with the help of height, weight and BMI. It also gives accurate workout and diet plans for diabetic and hypertension patients.
             </p>
           </div>
           <div className="bg-gradient-to-r from-green-400 via-blue-500 to-indigo-600 text-white rounded-lg p-4 transition-transform transform hover:scale-105 duration-300 ease-in-out">
