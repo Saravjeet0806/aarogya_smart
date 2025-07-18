@@ -1,192 +1,104 @@
-import React, { useState, useEffect } from 'react';
-import * as XLSX from 'xlsx';
+import React, { useState } from 'react';
 
 const WorkoutPlan = () => {
-  const [inputs, setInputs] = useState({
-    height: '1.68',
-    weight: '47.5',
-    age: '18',
-    gender: 'Male',
-    fitnessGoal: 'Weight Gain',
-    fitnessType: 'Muscular Fitness',
-  });
-
-  const [result, setResult] = useState(null);
-  const [bmiInfo, setBmiInfo] = useState({ bmi: null, category: '' });
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/dataset.xlsx'); // file placed in /public
-      const arrayBuffer = await response.arrayBuffer();
-      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet);
-      setData(jsonData);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error loading dataset:', error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs((prev) => ({ ...prev, [name]: value }));
-  };
+  const [height, setHeight] = useState('175');
+  const [weight, setWeight] = useState('65');
+  const [bmi, setBmi] = useState(null);
+  const [category, setCategory] = useState('');
+  const [workoutPlan, setWorkoutPlan] = useState(null);
 
   const calculateBMI = () => {
-    const height = parseFloat(inputs.height);
-    const weight = parseFloat(inputs.weight);
-    if (!height || !weight) {
-      setBmiInfo({ bmi: null, category: 'Invalid inputs' });
-      return;
-    }
+    const h = parseFloat(height) / 100; // Convert cm to m
+    const w = parseFloat(weight);
+    if (!h || !w) return;
 
-    const bmi = weight / (height * height);
+    const bmiValue = (w / (h * h)).toFixed(1);
+    setBmi(bmiValue);
+
     let category = '';
-    if (bmi < 18.5) category = 'Underweight';
-    else if (bmi < 25) category = 'Normal weight';
-    else if (bmi < 30) category = 'Overweight';
-    else category = 'Obese';
+    let plan = '';
 
-    setBmiInfo({ bmi: bmi.toFixed(2), category });
-  };
-
-  const generatePlan = () => {
-    calculateBMI();
-
-    const match = data.find(
-      (entry) =>
-        entry.Sex?.toLowerCase() === inputs.gender.toLowerCase() &&
-        parseInt(entry.Age) === parseInt(inputs.age) &&
-        parseFloat(entry.Height) === parseFloat(inputs.height) &&
-        parseFloat(entry.Weight) === parseFloat(inputs.weight) &&
-        entry['Fitness Goal']?.toLowerCase() === inputs.fitnessGoal.toLowerCase() &&
-        entry['Fitness Type']?.toLowerCase() === inputs.fitnessType.toLowerCase()
-    );
-
-    if (match) {
-      setResult(match);
+    if (bmiValue < 18.5) {
+      category = 'Underweight';
+      plan = `
+        - Focus on strength training 3-4x/week
+        - Add high-calorie nutritious meals
+        - Avoid excessive cardio
+        - Rest well and maintain protein intake
+      `;
+    } else if (bmiValue >= 18.5 && bmiValue < 24.9) {
+      category = 'Normal';
+      plan = `
+        - Mix of strength & cardio (4-5 days/week)
+        - Include yoga or stretching
+        - Follow a balanced diet
+        - Maintain hydration and rest
+      `;
+    } else if (bmiValue >= 25 && bmiValue < 29.9) {
+      category = 'Overweight';
+      plan = `
+        - Cardio-heavy workout (5x/week)
+        - Moderate strength training
+        - Reduce sugar & refined carbs
+        - Track calories and increase daily steps
+      `;
     } else {
-      setResult({ error: 'No matching workout plan found. Try adjusting your inputs.' });
+      category = 'Obese';
+      plan = `
+        - Begin with low-impact cardio (e.g., walking, swimming)
+        - Add light strength training after 2–3 weeks
+        - Focus on portion control & meal prep
+        - Consult doctor if needed before intense workouts
+      `;
     }
+
+    setCategory(category);
+    setWorkoutPlan(plan);
   };
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-r from-[#00D7CE] to-[#0084FF] p-6 sm:p-10"
-      style={{
-        background: 'linear-gradient(243.4deg, rgb(0, 215, 206) 13%, rgb(0, 132, 255) 98%)',
-      }}
-    >
-      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-2xl p-8 md:p-12">
-        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-8">
-          Workout Plan Generator
-        </h1>
+    <section className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] flex items-center justify-center px-4 py-10">
+      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 md:p-10">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">Workout Plan Generator</h2>
 
-        <div className="grid sm:grid-cols-2 gap-5 mb-8">
-          <input
-            type="number"
-            name="height"
-            placeholder="Height (in meters)"
-            value={inputs.height}
-            onChange={handleChange}
-            className="p-3 rounded-lg border shadow-sm w-full focus:ring-2 focus:ring-blue-500 outline-none"
-          />
-          <input
-            type="number"
-            name="weight"
-            placeholder="Weight (in kg)"
-            value={inputs.weight}
-            onChange={handleChange}
-            className="p-3 rounded-lg border shadow-sm w-full focus:ring-2 focus:ring-blue-500 outline-none"
-          />
-          <input
-            type="number"
-            name="age"
-            placeholder="Age"
-            value={inputs.age}
-            onChange={handleChange}
-            className="p-3 rounded-lg border shadow-sm w-full focus:ring-2 focus:ring-blue-500 outline-none"
-          />
-          <select
-            name="gender"
-            value={inputs.gender}
-            onChange={handleChange}
-            className="p-3 rounded-lg border shadow-sm w-full focus:ring-2 focus:ring-blue-500 outline-none"
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          <select
-            name="fitnessGoal"
-            value={inputs.fitnessGoal}
-            onChange={handleChange}
-            className="p-3 rounded-lg border shadow-sm w-full focus:ring-2 focus:ring-blue-500 outline-none"
-          >
-            <option value="">Select Fitness Goal</option>
-            <option value="Weight Loss">Weight Loss</option>
-            <option value="Weight Gain">Weight Gain</option>
-          </select>
-          <select
-            name="fitnessType"
-            value={inputs.fitnessType}
-            onChange={handleChange}
-            className="p-3 rounded-lg border shadow-sm w-full focus:ring-2 focus:ring-blue-500 outline-none"
-          >
-            <option value="">Select Fitness Type</option>
-            <option value="Cardiovascular Fitness">Cardiovascular Fitness</option>
-            <option value="Muscular Fitness">Muscular Fitness</option>
-          </select>
-        </div>
-
-        <div className="text-center">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Height (cm)</label>
+            <input
+              type="number"
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="e.g. 170"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Weight (kg)</label>
+            <input
+              type="number"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="e.g. 65"
+            />
+          </div>
           <button
-            onClick={generatePlan}
-            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition"
+            onClick={calculateBMI}
+            className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
           >
             Generate Plan
           </button>
         </div>
 
-        {bmiInfo.bmi && (
-          <div className="mt-10 p-6 bg-white rounded-xl shadow-md animate-fade-in">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">BMI Information</h2>
-            <p><strong>BMI:</strong> {bmiInfo.bmi}</p>
-            <p><strong>Category:</strong> {bmiInfo.category}</p>
-          </div>
-        )}
-
-        {loading && (
-          <div className="text-center mt-10 text-gray-600 font-medium">Loading data...</div>
-        )}
-
-        {result && (
-          <div className="mt-10 p-6 bg-white rounded-xl shadow-md animate-fade-in">
-            {result.error ? (
-              <p className="text-red-600 font-bold">{result.error}</p>
-            ) : (
-              <>
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">Recommended Plan</h2>
-                <p><strong>Fitness Goal:</strong> {result['Fitness Goal']}</p>
-                <p><strong>Fitness Type:</strong> {result['Fitness Type']}</p>
-                <p><strong>Exercises:</strong> {result.Exercises}</p>
-                <p><strong>Equipment:</strong> {result.Equipment}</p>
-                <p><strong>Diet:</strong> {result.Diet}</p>
-                <p><strong>Recommendation:</strong> {result.Recommendation}</p>
-              </>
-            )}
+        {bmi && (
+          <div className="mt-6 bg-gray-100 p-4 rounded-md">
+            <h3 className="font-semibold text-lg text-gray-800">Your BMI: {bmi}</h3>
+            <p className="text-gray-700 mb-2">Category: <span className="font-medium">{category}</span></p>
+            <pre className="text-gray-700 whitespace-pre-wrap text-sm">{workoutPlan}</pre>
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
